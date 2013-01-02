@@ -6,12 +6,14 @@ define([
   'views/home/HomeView',
   'views/projects/ProjectsView',
   'views/contributors/ContributorsView',
+  'views/about/AboutView',
   'views/footer/FooterView'
-], function($, _, Backbone, HomeView, ProjectsView, ContributorsView, FooterView) {
+], function($, _, Backbone, HomeView, ProjectsView, ContributorsView, AboutView, FooterView) {
   
   var AppRouter = Backbone.Router.extend({
     routes: {
       // Define some URL routes
+	  'about': 'showAbout', 
       'projects': 'showProjects',
       'users': 'showContributors',
       
@@ -23,6 +25,13 @@ define([
   var initialize = function(){
 
     var app_router = new AppRouter;
+
+	app_router.on('route:showAbout', function() {
+
+		var aboutView = new AboutView();
+		aboutView.render();
+
+	});
     
     app_router.on('route:showProjects', function(){
    
