@@ -7,7 +7,17 @@ require.config({
   paths: {
     jquery: 'libs/jquery/jquery',
     underscore: 'libs/underscore/underscore-min',
-    backbone: 'libs/backbone/backbone',
+    backbone: 'libs/backbone/backbone', 
+    facebook_api: 'libs/facebook/facebook-api', 
+    async: 'libs/requirejs-plugins/async', 
+    depend: 'libs/requirejs-plugins/depend', 
+    font: 'libs/requirejs-plugins/font', 
+    goog: 'libs/requirejs-plugins/goog', 
+    json: 'libs/requirejs-plugins/json', 
+    noext: 'libs/requirejs-plugins/noext', 
+    mdown: 'libs/requirejs-plugins/mdown', 
+    propertyParser: 'libs/requirejs-plugins/propertyParser', 
+    markdownConverter: 'libs/requirejs-plugins/markdownConverter', 
     templates: '../templates'
   }
 
