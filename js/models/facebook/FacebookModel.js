@@ -3,11 +3,16 @@ define([
     'backbone',
 ], function(_, Backbone) {
 
+    console.debug("Loading FacebookModel");
+
     var SessionModel = Backbone.Model.extend({
 
         urlRoot: '/session', 
 
         initialize: function() {
+
+            console.debug("Initializing FacebookModel");
+
             var that = this;
 
             $.ajaxPrefilter(function(options, originalOptions, jqXHR) {

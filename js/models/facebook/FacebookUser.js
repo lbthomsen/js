@@ -5,115 +5,140 @@ define([
     'facebook_api!appId:482114365153335'
 ], function($, _, Backbone, FacebookApi) {
 
-  var FacebookUser = Backbone.Model.extend({
+    console.debug("Loading FacebookUser");
 
-    initialize: function(attributes, options) {
-      options || (options = {});
-      this.options = _.defaults(options, this.defaultOptions);
+    var FacebookUser = Backbone.Model.extend({
 
-      _.bindAll(this, 'onLoginStatusChange');
+        initialize: function(attributes, options) {
 
-      FB.Event.subscribe('auth.authResponseChange', this.onLoginStatusChange);
-    },
+            console.debug("Initializing FacebookUser");
 
-    options: null,
+            options || (options = {});
+            this.options = _.defaults(options, this.defaultOptions);
 
-    defaultOptions: {
-      // see https://developers.facebook.com/docs/authentication/permissions/
-      scope: ['email'], // fb permissions
-      autoFetch: true, // auto fetch profile after login
-      protocol: location.protocol
-    },
+            _.bindAll(this, 'onLoginStatusChange');
 
-    _loginStatus: null,
+            FB.Event.subscribe('auth.authResponseChange', this.onLoginStatusChange);
+        },
 
-    isConnected: function() {
-      return this._loginStatus === 'connected';
-    },
+        options: null,
 
-    login: function(callback){
-      if (typeof callback === 'undefined') {
-        callback = function() {};
-      }
-      FB.login(callback, { scope: this.options.scope.join(',') });
-    },
+        defaultOptions: {
+            // see https://developers.facebook.com/docs/authentication/permissions/
+            scope: [], // fb permissions
+            autoFetch: true, // auto fetch profile after login
+            protocol: location.protocol
+        },
 
-    logout: function(){
-      FB.logout();
-    },
+        _loginStatus: null,
 
-    updateLoginStatus: function(){
-      FB.getLoginStatus(this.onLoginStatusChange);
-    },
+        isConnected: function() {
 
-    onLoginStatusChange: function(response) {
-      if(this._loginStatus === response.status) return false;
+            console.debug("FacebookUser isConnected");
 
-      var event;
+            return this._loginStatus === 'connected';
+        },
 
-      if(response.status === 'not_authorized') {
-        event = 'facebook:unauthorized';
-      } else if (response.status === 'connected') {
-        event = 'facebook:connected';
-        if(this.options.autoFetch === true) this.fetch();
-      } else {
-        event = 'facebook:disconnected';
-      }
+        login: function(callback){
 
-      this.trigger(event, this, response);
-      this._loginStatus = response.status;
-    },
+            console.debug("FacebookUser login");
 
-    parse: function(response) {
-      var attributes = _.extend(response, {
-        pictures: this.profilePictureUrls(response.id)
-      });
+            if (typeof callback === 'undefined') {
+                callback = function() {};
+            }
+            FB.login(callback, { scope: this.options.scope.join(',') });
+        },
 
-      return attributes;
-    },
+        logout: function(){
 
-    sync: function(method, model, options) {
-      if(method !== 'read') throw new Error('FacebookUser is a readonly model, cannot perform ' + method);
+            console.debug("FacebookUser logout");
 
-      var callback = function(response) {
-        if(response.error) {
-          options.error(response);
-        } else {
-          options.success(response);
+            FB.logout();
+        },
+
+        updateLoginStatus: function(){
+
+            console.debug("FacebookUser updateLoginStatus");
+
+            FB.getLoginStatus(this.onLoginStatusChange);
+        },
+
+        onLoginStatusChange: function(response) {
+
+            console.debug("FacebookUser onLoginStatusChange");
+
+            if(this._loginStatus === response.status) return false;
+
+            var event;
+
+            if(response.status === 'not_authorized') {
+                event = 'facebook:unauthorized';
+            } else if (response.status === 'connected') {
+                event = 'facebook:connected';
+                if(this.options.autoFetch === true) this.fetch();
+            } else {
+                event = 'facebook:disconnected';
+            }
+
+            this.trigger(event, this, response);
+            this._loginStatus = response.status;
+        },
+
+        parse: function(response) {
+
+            console.debug("FacebookUser parse");
+
+            var attributes = _.extend(response, {
+                pictures: this.profilePictureUrls(response.id)
+            });
+
+            return attributes;
+        },
+
+        sync: function(method, model, options) {
+
+            console.debug("FacebookUser sync");
+
+            if(method !== 'read') throw new Error('FacebookUser is a readonly model, cannot perform ' + method);
+
+            var callback = function(response) {
+                if(response.error) {
+                    options.error(response);
+                } else {
+                    options.success(response);
+                }
+                return true;
+            };
+
+            FB.api('/me', callback);
+        },
+
+        profilePictureUrls: function(id) {
+            id || (id = this.id);
+            var urls = {};
+            _([ 'square', 'small', 'normal', 'large' ]).each(function(size){
+                urls[size] = this.profilePictureUrl(id, size);
+            }, this);
+
+            return urls;
+        },
+
+        profilePictureUrl: function(id, size) {
+            return [
+                this.options.protocol,
+                '//graph.facebook.com/',
+                id,
+                '/picture?type=',
+                size,
+                this.options.protocol.indexOf('https') > -1 ? '&return_ssl_resources=1' : ''
+            ].join('');
         }
-        return true;
-      };
 
-      FB.api('/me', callback);
-    },
+    });
 
-    profilePictureUrls: function(id) {
-      id || (id = this.id);
-      var urls = {};
-      _([ 'square', 'small', 'normal', 'large' ]).each(function(size){
-        urls[size] = this.profilePictureUrl(id, size);
-      }, this);
+    //scope.FacebookUser = FacebookUser;
 
-      return urls;
-    },
-
-    profilePictureUrl: function(id, size) {
-      return [
-        this.options.protocol,
-        '//graph.facebook.com/',
-        id,
-        '/picture?type=',
-        size,
-        this.options.protocol.indexOf('https') > -1 ? '&return_ssl_resources=1' : ''
-      ].join('');
-    }
-
-  });
-
-  //scope.FacebookUser = FacebookUser;
-
-  return FacebookUser;
+    return FacebookUser;
 
 });
-
 // vim: ts=4 et nowrap

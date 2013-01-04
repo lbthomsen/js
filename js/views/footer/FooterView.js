@@ -6,10 +6,14 @@ define([
   'text!templates/footer/footerTemplate.html'
 ], function($, _, Backbone, OwnerModel, footerTemplate){
 
+  console.debug("Loading FooterView");
+
   var FooterView = Backbone.View.extend({
     el: $("#footer"),
 
     initialize: function() {
+
+      console.debug("Initializing FooterView");
 
       var that = this;
       var options = {query: 'lbthomsen'}
@@ -25,6 +29,8 @@ define([
     },
 
     render: function(){
+
+      console.debug("Rendering FooterView");
 
       var data = {
         owner: this.model.toJSON(),
