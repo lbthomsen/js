@@ -4,11 +4,17 @@ define([
   'models/contributor/ContributorModel'
 ], function(_, Backbone, ContributorModel){
 
+  console.debug("Loading ContributorsCollection");
+
   var ContributorsCollection = Backbone.Collection.extend({
       
       model: ContributorModel,
 
-      initialize : function(models, options) {},
+      initialize : function(models, options) {
+
+        console.debug("Initializing ContributorsCollection");
+
+      },
       
       url : function() {
         return 'https://api.github.com/repos/thomasdavis/backbonetutorials/contributors';
@@ -20,6 +26,8 @@ define([
       },
       
       removeDuplicates: function(myArray) {
+
+        console.debug("ContributorsColletion method removeDuplicates");
 
           //credit: http://newcodeandroll.blogspot.ca/2012/01/how-to-find-duplicates-in-array-in.html  
           // I was hoping underscore's _uniq would work here but it only seems to work for single values not objects               

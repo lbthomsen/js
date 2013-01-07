@@ -8,6 +8,7 @@ require.config({
     jquery: 'libs/jquery/jquery',
     underscore: 'libs/underscore/underscore-min',
     backbone: 'libs/backbone/backbone', 
+    text: 'libs/text/text', 
     facebook_api: 'libs/facebook/facebook-api', 
     async: 'libs/requirejs-plugins/async', 
     depend: 'libs/requirejs-plugins/depend', 

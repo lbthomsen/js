@@ -4,10 +4,15 @@ define([
   'backbone',
   'models/project/ProjectModel'
 ], function($, _, Backbone, ProjectModel){
+
+  console.debug("Loading ProjectsCollection");
+
   var ProjectsCollection = Backbone.Collection.extend({
     model: ProjectModel,
     
     initialize: function(){
+
+      console.debug("Initializing ProjectsCollection");
 
       var project0 = new ProjectModel('Cross Domain', 'https://github.com/thomasdavis/backbonetutorials/tree/gh-pages/examples/cross-domain'); 
       var project1 = new ProjectModel('Infinite Scroll', 'https://github.com/thomasdavis/backbonetutorials/tree/gh-pages/examples/infinite-scroll'); 
