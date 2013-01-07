@@ -2,7 +2,7 @@ define([
     'jquery', 
     'underscore', 
     'backbone', 
-    'facebook_api!appId:482114365153335'
+    'facebook_api!appId:135472613277777'
 ], function($, _, Backbone, FacebookApi) {
 
     console.debug("Loading FacebookUser");
