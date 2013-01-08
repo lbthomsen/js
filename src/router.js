@@ -22,6 +22,7 @@ define([
             'privacy': 'showPrivacy', 
             'contact': 'showContact', 
             'terms': 'showTerms', 
+            'canvas/': 'showCanvas', 
       
             // Default
             '*actions': 'defaultAction'

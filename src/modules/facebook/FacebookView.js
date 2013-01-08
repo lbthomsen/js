@@ -2,13 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'modules/facebook/FacebookModel',
+  'modules/facebook/Facebook',
   'text!templates/facebook/loginTemplate.html',
   'text!templates/facebook/logoutTemplate.html'
-], function($, _, Backbone, FacebookUser, loginTemplate, logoutTemplate){
+], function($, _, Backbone, Facebook, loginTemplate, logoutTemplate){
 
     console.debug("Loading FacebookView");
-    var facebookUser = new FacebookUser();
+    //var facebookModel = new FacebookModel();
 
     var FacebookView = Backbone.View.extend({
         el: $("#fb-root"), 
@@ -19,15 +19,22 @@ define([
 
             var that = this;
 
+            console.debug("Testing connection to model: " + this.model.getCopyright());
+
             that.render();
 
+        }, 
+
+        events: {
+            "click #fbLogin": "login", 
+            "click #fbLogout": "logout"
         }, 
 
         render: function() {
 
             console.debug("Rendering FacebookView");
 
-            if (facebookUser.isConnected()) {
+            if (facebookModel.isConnected()) {
                 console.debug("Facebook IS connected");
             } else { 
                 console.debug("Facebook is NOT connected");
@@ -35,9 +42,18 @@ define([
 
             var compiledTemplate = _.template(loginTemplate);
             this.$el.html(compiledTemplate);
+        }, 
+
+        login: function() {
+            console.debug("Login clicked");
+            facebookModel.login();
+        }, 
+
+        logout: function() {
+            console.debug("Logout clicked");
         }
 
-    });
+    })
 
     return FacebookView;
   

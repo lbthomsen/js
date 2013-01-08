@@ -5,13 +5,13 @@ define([
     'facebook_api!appId:135472613277777'
 ], function($, _, Backbone, FacebookApi) {
 
-    console.debug("Loading FacebookUser");
+    console.debug("Loading Facebook");
 
-    var FacebookUser = Backbone.Model.extend({
+    var Facebook = Backbone.Model.extend({
 
         initialize: function(attributes, options) {
 
-            console.debug("Initializing FacebookUser");
+            console.debug("Initializing Facebook");
 
             options || (options = {});
             this.options = _.defaults(options, this.defaultOptions);
@@ -34,14 +34,14 @@ define([
 
         isConnected: function() {
 
-            console.debug("FacebookUser isConnected");
+            console.debug("Facebook isConnected");
 
             return this._loginStatus === 'connected';
         },
 
         login: function(callback){
 
-            console.debug("FacebookUser login");
+            console.debug("Facebook login");
 
             if (typeof callback === 'undefined') {
                 callback = function() {};
@@ -51,21 +51,21 @@ define([
 
         logout: function(){
 
-            console.debug("FacebookUser logout");
+            console.debug("Facebook logout");
 
             FB.logout();
         },
 
         updateLoginStatus: function(){
 
-            console.debug("FacebookUser updateLoginStatus");
+            console.debug("Facebook updateLoginStatus");
 
             FB.getLoginStatus(this.onLoginStatusChange);
         },
 
         onLoginStatusChange: function(response) {
 
-            console.debug("FacebookUser onLoginStatusChange");
+            console.debug("Facebook onLoginStatusChange");
 
             if(this._loginStatus === response.status) return false;
 
@@ -86,7 +86,7 @@ define([
 
         parse: function(response) {
 
-            console.debug("FacebookUser parse");
+            console.debug("Facebook parse");
 
             var attributes = _.extend(response, {
                 pictures: this.profilePictureUrls(response.id)
@@ -97,9 +97,9 @@ define([
 
         sync: function(method, model, options) {
 
-            console.debug("FacebookUser sync");
+            console.debug("Facebook sync");
 
-            if(method !== 'read') throw new Error('FacebookUser is a readonly model, cannot perform ' + method);
+            if(method !== 'read') throw new Error('Facebook is a readonly model, cannot perform ' + method);
 
             var callback = function(response) {
                 if(response.error) {
@@ -132,13 +132,17 @@ define([
                 size,
                 this.options.protocol.indexOf('https') > -1 ? '&return_ssl_resources=1' : ''
             ].join('');
+        }, 
+
+        getCopyright: function() {
+            return "Copyright 2013 Netcom Partner";
         }
 
     });
 
     //scope.FacebookUser = FacebookUser;
 
-    return FacebookUser;
+    return Facebook;
 
 });
 // vim: ts=4 et nowrap
