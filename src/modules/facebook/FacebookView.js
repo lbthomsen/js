@@ -16,6 +16,7 @@ define([
         initialize: function() {
 
             console.debug("Initializing FacebookView");
+            this.model = new Facebook();
 
             var that = this;
 
@@ -34,7 +35,7 @@ define([
 
             console.debug("Rendering FacebookView");
 
-            if (facebookModel.isConnected()) {
+            if (this.model.isConnected()) {
                 console.debug("Facebook IS connected");
             } else { 
                 console.debug("Facebook is NOT connected");
@@ -46,11 +47,12 @@ define([
 
         login: function() {
             console.debug("Login clicked");
-            facebookModel.login();
+            this.model.login();
         }, 
 
         logout: function() {
             console.debug("Logout clicked");
+            this.model.logout();
         }
 
     })
