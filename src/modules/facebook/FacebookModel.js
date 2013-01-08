@@ -25,7 +25,7 @@ define([
 
         defaultOptions: {
             // see https://developers.facebook.com/docs/authentication/permissions/
-            scope: [], // fb permissions
+            scope: ['email'], // fb permissions
             autoFetch: true, // auto fetch profile after login
             protocol: location.protocol
         },
